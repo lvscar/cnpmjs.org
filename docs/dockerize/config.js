@@ -11,6 +11,18 @@ var version = require('../package.json').version;
 var root = path.dirname(__dirname);
 var dataDir = process.env.CNPM_DATA_DIR ;
 
+
+var oss = require('oss-cnpm');
+
+
+var ossClient = oss.create({
+  accessKeyId: process.env.OSS_AK,
+  accessKeySecret: process.env.OSS_AK_SECRET,
+  endpoint: process.env.OSS_ENDPOINT,
+  bucket: process.env.OSS_BUCKET,
+  mode: 'public',
+});
+
 var config = {
   version: version,
   dataDir: dataDir,
@@ -98,16 +110,16 @@ var config = {
    */
 
   database: {
-    db: 'cnpmjs_test',
-    username: 'root',
-    password: '',
+    db: process.env.RDS_DB_NAME,
+    username: process.env.RDS_DB_USER_NAME,
+    password: process.env.RDS_DB_USER_PASSWORD,
 
     // the sql dialect of the database
     // - currently supported: 'mysql', 'sqlite', 'postgres', 'mariadb'
     dialect: 'mysql',
 
     // the Docker container network hostname defined at docker-compose.yml
-    host: 'mysql-db',
+    host: process.env.RDS_DB_HOST,
 
     // custom port; default: 3306
     port: 3306,
@@ -127,15 +139,14 @@ var config = {
     logging: !!process.env.SQL_DEBUG,
   },
 
-  // package tarball store in local filesystem by default
-  nfs: require('fs-cnpm')({
-    dir: path.join(dataDir, 'nfs')
-  }),
+  // use OSS as storage backend
+  nfs:ossClient,  
   // if set true, will 302 redirect to `nfs.url(dist.key)`
   downloadRedirectToNFS: false,
 
-  // registry url name
-  registryHost: '127.0.0.1:7001',
+   // registry url name
+   //TODO: put in env    
+  registryHost: '127.0.0.1:7001', 
 
   /**
    * registry mode config

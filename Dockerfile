@@ -17,8 +17,7 @@ RUN npm set registry https://registry.npm.taobao.org
 RUN npm install
 
 COPY .  ${CNPM_DIR}
-#COPY docs/dockerize/config.js  ${CNPM_DIR}/config/
-COPY docs/dockerize/config.private.js  ${CNPM_DIR}/config/config.js
+COPY docs/dockerize/config.js  ${CNPM_DIR}/config/config.js
 
 EXPOSE 7001/tcp 7002/tcp
 
