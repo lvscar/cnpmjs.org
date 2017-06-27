@@ -48,7 +48,7 @@ var config = {
   // page mode, enable on development env
   pagemock: process.env.NODE_ENV === 'development',
   // session secret
-  sessionSecret: 'cnpmjs.org test session secret',
+  sessionSecret: (process.env.SESSION_SECRET ||  'cnpmjs.org test session secret'),
   // max request json body size
   jsonLimit: '10mb',
   // log dir name
@@ -146,7 +146,7 @@ var config = {
 
    // registry url name
    //TODO: put in env    
-  registryHost: '127.0.0.1:7001', 
+  registryHost:  (process.env.REGISTRY_HOST ||  '127.0.0.1:7001'), 
 
   /**
    * registry mode config
@@ -155,7 +155,7 @@ var config = {
   // enable private mode or not
   // private mode: only admins can publish, other users just can sync package from source npm
   // public mode: all users can publish
-  enablePrivate: false,
+    enablePrivate:  ((process.env.ENABLE_PRIVATE == "true") ?  true :false) ,
 
   // registry scopes, if don't set, means do not support scopes
   scopes: [ '@cnpm', '@cnpmtest', '@cnpm-test' ],
@@ -192,7 +192,7 @@ var config = {
   // none: do not sync any module, proxy all public modules from sourceNpmRegistry
   // exist: only sync exist modules
   // all: sync all modules
-  syncModel: 'none', // 'none', 'all', 'exist'
+ syncModel: ( process.env.SYNC_MODEL || 'none'), // 'none', 'all', 'exist'
 
   syncConcurrency: 1,
   // sync interval, default is 10 minutes
@@ -211,7 +211,7 @@ var config = {
 
   // changes streaming sync
   syncChangesStream: false,
-  handleSyncRegistry: 'http://127.0.0.1:7001',
+  handleSyncRegistry: ( process.env.HANDLE_SYNC_REGISTRY ||  '127.0.0.1:7001' )   ,
 
   // badge subject on http://shields.io/
   badgePrefixURL: 'https://img.shields.io/badge',
